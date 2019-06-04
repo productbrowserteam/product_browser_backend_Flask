@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
-from Resources import ProductBrowser, Category, Product
+from Resources import  Category, Product, PBJson
 
 
 app = Flask(__name__)
@@ -21,10 +21,13 @@ def create_tables():
 
 
 
-api.add_resource(ProductBrowser.PBlist, '/pb')
-api.add_resource(Category.Category, '/cat')
-api.add_resource(Category.CategoryModify, '/cat/mod')
+api.add_resource(Category.Category, '/category')
+api.add_resource(Category.CategoryModify, '/category/modify')
 api.add_resource(Product.Product, "/product")
+api.add_resource(Product.Products, "/importproducts")
+api.add_resource(Product.ProductsJson, "/product/json")
+api.add_resource(Category.CategoryJson, "/category/json")
+api.add_resource(PBJson.FullJson, "/getjson")
 
 
 if __name__ == '__main__':

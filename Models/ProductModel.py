@@ -10,13 +10,15 @@ class ProductModel(db.Model):
     url = db.Column(db.String)
     description = db.Column(db.String)
     subcategory = db.Column(db.String)
+    subcategoryUrl = db.Column(db.String)
 
 
-    def __init__(self, name, url, description, subcategory, cid):
+    def __init__(self, name, url, description, subcategory, subcategoryUrl):
         self.name = name
         self.url = url
         self.description = description
         self.subcategory = subcategory
+        self.subcategoryUrl = subcategoryUrl
 
     def save_to_db(self):
         db.session.add(self)

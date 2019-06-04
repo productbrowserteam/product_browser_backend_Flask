@@ -41,3 +41,7 @@ class CategoryModel(db.Model):
     def find_by_parentCategory(cls, parentCategory):
         return cls.query.filter_by(parentCategory=parentCategory)
 
+    @classmethod
+    def find_by_parentCategoryFirst(cls, parentCategory):
+        return cls.query.filter_by(parentCategory=parentCategory).first()
+

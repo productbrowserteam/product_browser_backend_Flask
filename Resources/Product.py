@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from Models.ProductModel import ProductModel
 from Models.CategoryModel import CategoryModel
+import json
 
 
 class Product(Resource):
@@ -10,6 +11,7 @@ class Product(Resource):
     parser.add_argument("url", type=str, required=False)
     parser.add_argument("description", type=str, required=False)
     parser.add_argument("subcategory", type=str, required=True, help="subcategory required")
+    parser.add_argument("subcategoryUrl", type=str, required=True, help="subcategoryUrl required")
     parser.add_argument("cid", type=str, required=False)
 
     def get(self):
@@ -17,7 +19,7 @@ class Product(Resource):
         if ProductModel.query.first():
             result = []
             for product in products:
-                productdata = {"id": product.id,"name" : product.name, "description": product.description, "subcategory": product.subcategory}
+                productdata = {"id": product.id,"name" : product.name, "description": product.description, "subcategory": {"name": product.subcategory, "url": product.subcategoryUrl}}
                 result.append(productdata)
             return {"products": result}
         return {"message": "no products "}
@@ -43,3 +45,28 @@ class Product(Resource):
             product.delete_from_db()
             return {"message": "product {} deleted from database".format(request_data["name"])}
         return {"message": "error {} doesn't exist".format(request_data["name"])}
+
+
+class Products(Resource):
+
+    def get(self):
+        with open("Prod.txt", "br") as json_file:
+            data = json.load(json_file)
+            for p in data["products"]:
+                prod = ProductModel(p["name"], p["url"], p["description"], p["subcategory"][0]["name"], p["subcategory"][0]["url"])
+                prod.save_to_db()
+        return {"message": "product imported"}
+
+
+class ProductsJson(Resource):
+
+    def get(self):
+        products = ProductModel.query.all()
+        if ProductModel.query.first():
+            result = []
+            for product in products:
+                productdata = { "name": product.name, "description": product.description,
+                               "subcategory": [{"name": product.subcategory, "url": product.subcategoryUrl}]}
+                result.append(productdata)
+            return {"header": "Products", "products": result}
+        return {"message": "no products "}
