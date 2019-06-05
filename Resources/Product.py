@@ -68,5 +68,29 @@ class ProductsJson(Resource):
                 productdata = { "name": product.name, "description": product.description,
                                "subcategory": [{"name": product.subcategory, "url": product.subcategoryUrl}]}
                 result.append(productdata)
-            return {"header": "Products", "products": result}
+            return {"products": result}
         return {"message": "no products "}
+
+
+class ProductModify(Resource):
+
+    parser = reqparse.RequestParser()
+    parser.add_argument("name", type=str, required=True, help="name required")
+    parser.add_argument("url", type=str, required=False)
+    parser.add_argument("description", type=str, required=False)
+    parser.add_argument("subcategory", type=str, required=False, help="subcategory required")
+    parser.add_argument("subcategoryUrl", type=str, required=False, help="subcategoryUrl required")
+    parser.add_argument("cid", type=str, required=False)
+
+    def post(self):
+        request_data = ProductModify.parser.parse_args()
+
+        product = ProductModel.find_by_name(request_data["name"])
+        if product:
+            product.url = request_data["url"]
+            product.description = request_data["description"]
+            product.subcategory = request_data["subcategory"]
+            product.subcategoryUrl = request_data["subcategoryUrl"]
+            product.modify_to_db()
+            return {"message": "product updated"}
+        return {"message": "product doesn't exist"}
