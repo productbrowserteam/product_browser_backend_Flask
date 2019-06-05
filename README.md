@@ -21,7 +21,7 @@ json request format:
 
 https://product-browser1.herokuapp.com/category/modify
 
-GET - used fill base with categories from Cat.txt - do not user otherwise, will end up creating duplicates in db.
+GET - used to fill base with categories from Cat.txt - do not user otherwise, will end up creating duplicates in db.
 
 https://product-browser1.herokuapp.com/category/json
 
