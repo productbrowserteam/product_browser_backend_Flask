@@ -81,7 +81,7 @@ class CategoryModify(Resource):
 class CategoryJson(Resource):
 
     def get(self):
-        result = {"header": "Categories"}
+        result = {}
         def categoryhelper(parent, series):
             data = []
             cat = CategoryModel.find_by_parentCategory(parent)

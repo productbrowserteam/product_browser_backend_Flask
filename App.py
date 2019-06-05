@@ -24,6 +24,7 @@ def create_tables():
 api.add_resource(Category.Category, '/category')
 api.add_resource(Category.CategoryModify, '/category/modify')
 api.add_resource(Product.Product, "/product")
+api.add_resource(Product.ProductModify, "/product/modify")
 api.add_resource(Product.Products, "/importproducts")
 api.add_resource(Product.ProductsJson, "/product/json")
 api.add_resource(Category.CategoryJson, "/category/json")
